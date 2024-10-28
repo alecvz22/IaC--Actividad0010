@@ -1,0 +1,58 @@
+UbuntuApache.yml:
+---
+•⁠  ⁠hosts: Ubuntu
+  become: yes
+  tasks:
+
+    # Update the apt repository and cache
+    - name: Update apt repo and cache
+      apt:
+        update_cache: yes
+
+    # Install Apache
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+
+    # Ensure Apache is started
+    - name: Start Apache service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+ # Allow HTTP traffic through the firewall
+    - name: Allow HTTP traffic through UFW
+      ufw:
+        rule: allow
+        port: "80"
+        proto: tcp
+
+    # Enable UFW (if it’s not already enabled)
+    - name: Enable UFW
+      ufw:
+        state: enabled
+
+        # Create a sports information webpage
+    - name: Create a sports information webpage
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Sports Information</title>
+          </head>
+          <body>
+              <h1>Welcome to the Sports Information Page</h1>
+              <p>Here you'll find the latest updates on various sports!</p>
+              <h2>Football</h2>
+              <p>Get all the latest football scores, news, and player stats.</p>
+              <h2>Basketball</h2>
+              <p>Catch up with the top teams, game schedules, and highlights.</p>
+              <h2>Tennis</h2>
+              <p>Stay informed with recent tournaments, player rankings, and match results.</p>
+          </body>
+          </html>
